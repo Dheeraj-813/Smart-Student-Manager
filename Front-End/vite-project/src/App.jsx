@@ -6,6 +6,7 @@ import Student from './Pages/Student';
 import DashBoardLayout from './Layouts/DashBoardLayout';
 import AddStudent from './Pages/AddStudent';
 import DashBoard from './Pages/DashBoard';
+import AdminLoginPage from './Pages/AdminLoginPage';
 
 function App() {
   
@@ -17,6 +18,7 @@ function App() {
           {/* Public Pages */}
           <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/LoginForm" element={<AdminLoginPage />} />
           </Route>
 
           {/* Dashboard Pages */}

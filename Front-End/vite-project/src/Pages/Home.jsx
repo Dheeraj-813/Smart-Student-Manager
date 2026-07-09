@@ -51,7 +51,7 @@ function Home() {
       All-in-one solution for student management, performance tracking, analytics.
     </p>
 
-<Link to="/dashboard">
+<Link to="/LoginForm">
     <button className="mt-6 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
       Get Started
     </button>

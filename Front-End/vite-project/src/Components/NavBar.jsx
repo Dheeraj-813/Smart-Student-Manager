@@ -27,7 +27,7 @@ const NavBar = () => {
           <Link to="/features" className="hover:text-blue-500">Features</Link>
           <Link to="/about" className="hover:text-blue-500">About</Link>
           <Link to="/login" className="hover:text-blue-500">Login</Link>
-          <Link to="/dashboard" className="hover:text-blue-500">
+          <Link to="/LoginForm" className="hover:text-blue-500">
             <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
               Get Started
             </button>
@@ -59,7 +59,7 @@ const NavBar = () => {
           <Link to="/login" onClick={() => setIsOpen(false)}>
             Login
           </Link>
-          <Link to="/register" onClick={() => setIsOpen(false)}>
+          <Link to="/LoginForm" onClick={() => setIsOpen(false)}>
             <button className="bg-blue-500 text-white px-4 py-2 rounded w-full">
               Get Started
             </button>
