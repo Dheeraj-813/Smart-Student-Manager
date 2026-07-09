@@ -4,7 +4,7 @@ import LoginForm from '../Components/LoginForm'
 function AdminLoginPage() {
   return (
     <>
-    <LoginForm />
+    <LoginForm title="Admin Login" role="admin"/>
     </>
   )
 }

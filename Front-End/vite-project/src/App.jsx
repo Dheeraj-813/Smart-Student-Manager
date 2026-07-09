@@ -18,8 +18,10 @@ function App() {
           {/* Public Pages */}
           <Route element={<PublicLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/LoginForm" element={<AdminLoginPage />} />
           </Route>
+
+          {/* Login Page */}
+          <Route path="/LoginForm" element={<AdminLoginPage />} />
 
           {/* Dashboard Pages */}
           <Route path="/dashboard" element={<DashBoardLayout />}>
