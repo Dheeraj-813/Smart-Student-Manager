@@ -3,34 +3,46 @@ import studentsCap from '../assets/students-cap.png';
 import studManage from '../assets/StudentManage.jpg'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { validateLogin } from '../Utils/Validation';
 
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+// State to manage form data validation
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false,
+  });
 
+// State to manage form validation errors.
+  const [errors, setErrors] = useState({});
+
+// Handle input changes and update form data state
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'email') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    } else if (name === 'rememberMe') {
-      setRememberMe(e.target.checked);
-    }
-  }
+  const { name, value, type, checked } = e.target;
 
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: type === "checkbox" ? checked : value,
+        }));
+    };
+
+// Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Remember Me:', rememberMe);
-    // Reset form after submit
-    setEmail('');
-    setPassword('');
-    setRememberMe(false);
+    console.log('Email:', formData.email);
+    console.log('Password:', formData.password);
+    console.log('Remember Me:', formData.rememberMe);
+
+    const validationErrors = validateLogin(formData);
+
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+    }
+
+    setErrors({}); // Clear errors if validation passes
   }
 
   return (
@@ -68,9 +80,15 @@ function LoginForm() {
                         name='email'
                         placeholder="Enter your email"
                         onChange={handleChange}
-                        value={email}
+                        value={formData.email}
                         autoComplete='email'
                     />
+
+                    {errors.email && (
+                        <p className="text-red-500 text-sm">
+                        {errors.email}
+                        </p>
+                    )}
                 </div>
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
@@ -83,9 +101,15 @@ function LoginForm() {
                         name='password'
                         placeholder="Password"
                         onChange={handleChange}
-                        value={password}
+                        value={formData.password}
                         autoComplete='current-password'
                     />
+
+                    {errors.password && (
+                        <p className="text-red-500 text-sm">
+                        {errors.password}
+                        </p>
+                    )}
                 </div>
 
                 <div className='flex justify-between items-center mt-4'>
@@ -99,9 +123,10 @@ function LoginForm() {
                             id="remember"
                             className="form-checkbox h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
                             name='rememberMe'
-                            checked={rememberMe}
+                            checked={formData.rememberMe}
                             onChange={handleChange}
                         />
+
                         <span className="text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
