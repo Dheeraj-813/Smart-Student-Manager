@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 
-const studentRoutes = require('./routes/StudentRoutes');
+// const studentRoutes = require('./routes/StudentRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Routes
 // Student routes
-app.use('/api/students', studentRoutes);
+// app.use('/api/students', studentRoutes);
 
 // Authentication routes..
 app.use('/api/auth', authRoutes);
