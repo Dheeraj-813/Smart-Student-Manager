@@ -7,6 +7,7 @@ import DashBoardLayout from './Layouts/DashBoardLayout';
 import AddStudent from './Pages/AddStudent';
 import DashBoard from './Pages/DashBoard';
 import AdminLoginPage from './Pages/AdminLoginPage';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 function App() {
   
@@ -24,10 +25,12 @@ function App() {
           <Route path="/LoginForm" element={<AdminLoginPage />} />
 
           {/* Dashboard Pages */}
+          <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashBoardLayout />}>
           <Route path="Student" element={<Student />} />
           <Route path='AddStudent' element={<AddStudent/>}/>
           <Route path='DashBoard' element={<DashBoard/>}/>
+          </Route>
           </Route>
 
           {/* Not Found */}
