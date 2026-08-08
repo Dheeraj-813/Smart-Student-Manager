@@ -8,6 +8,7 @@ import AddStudent from './Pages/AddStudent';
 import DashBoard from './Pages/DashBoard';
 import AdminLoginPage from './Pages/AdminLoginPage';
 import ProtectedRoute from './Components/ProtectedRoute';
+import EditStudent from './Pages/EditStudent';
 
 function App() {
   
@@ -30,6 +31,7 @@ function App() {
           <Route path="Student" element={<Student />} />
           <Route path='AddStudent' element={<AddStudent/>}/>
           <Route path='DashBoard' element={<DashBoard/>}/>
+          <Route path='EditStudent/:id' element={<EditStudent/>}/>
           </Route>
           </Route>
 
