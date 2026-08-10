@@ -1,14 +1,21 @@
 import {Link} from 'react-router-dom';
 import studentsCap from '../assets/students-cap.png'
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 const SideBar = () => {
   const navigate = useNavigate();
+  
+  // Use the useAuth hook to access the logout function from AuthContext
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     // Clear any authentication tokens or user data here if needed
     // For example: localStorage.removeItem('authToken');
-    localStorage.removeItem('token'); // Example of clearing a token
+    // localStorage.removeItem('token'); // Example of clearing a token
+    
+     // Use the useAuth hook to access the logout function from AuthContext
+    logout(); // Call the logout function from AuthContext
 
     // Navigate to the login page
     navigate('/LoginForm', { replace: true });

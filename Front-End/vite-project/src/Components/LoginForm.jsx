@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { validateLogin } from '../Utils/Validation';
 import { login } from '../Services/authServices';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 
 function LoginForm() {
@@ -32,7 +33,8 @@ function LoginForm() {
 // Use navigate hook from react-router-dom to programmatically navigate after successful login
   const navigate = useNavigate();
 
-
+// Use the useAuth hook to access the login function from AuthContext
+  const { login: authLogin } = useAuth();
 
 // Handle form submission
   const handleSubmit = async (e) => {
@@ -54,8 +56,9 @@ function LoginForm() {
 
         // Save token to localStorage or sessionStorage based on rememberMe
         if(response.success){
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        // localStorage.setItem('token', response.token);
+        // localStorage.setItem('user', JSON.stringify(response.user));
+        authLogin(response.token, response.user); // Use the login function from AuthContext to update the context state
 
         // Navigate to the dashboard or home page after successful login
         navigate('/dashboard');
