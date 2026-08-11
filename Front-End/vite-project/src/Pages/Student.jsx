@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import {getAllStudents, deleteStudent} from "../Services/StudentService"
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Student = () => {
 
@@ -38,11 +39,12 @@ const Student = () => {
     try {
       await deleteStudent(id);
       setStudents((prevStudents) => prevStudents.filter((student) => student._id !== id));
-      alert("Student deleted successfully!");
+      // alert("Student deleted successfully!");
+      toast.success("Student deleted successfully!");
     }
     catch (error) {
       console.error("Failed to delete student:", error);
-      alert("Failed to delete student. Please try again.");
+      toast.error("Failed to delete student. Please try again.");
     }
   };
 
@@ -60,7 +62,7 @@ const Student = () => {
       }
       catch(error){
         console.error(error);
-        setError("Something get wrong...!");
+        setError(error.userMessage || "Something went wrong.");
       }
       finally{
         setLoading(false)

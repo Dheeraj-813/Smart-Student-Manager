@@ -10,6 +10,8 @@ import AdminLoginPage from './Pages/AdminLoginPage';
 import ProtectedRoute from './Components/ProtectedRoute';
 import EditStudent from './Pages/EditStudent';
 import { AuthProvider } from './Context/AuthContext';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   
@@ -39,6 +41,16 @@ function App() {
             {/* Not Found */}
             <Route path="*" element={<NotFound />} />
         </Routes>
+        <ToastContainer   
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        />
       </BrowserRouter>
     </AuthProvider>
   </>

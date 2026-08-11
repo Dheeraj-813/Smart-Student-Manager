@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import { addStudent } from '../Services/StudentService';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddStudent = () => {
 
@@ -45,13 +46,18 @@ const handleSubmit = async (e) => {
       marks: "",
     });
 
-    alert(`Student ${response.data.name} added successfully!`);
+    toast.success(`Student ${response.data.name} added successfully!`);
 
     navigate("/dashboard/student");
 
   } catch(error){
-    setError(error.response?.data?.message || "An error occurred while adding the student.");
+    const errorMessage = error.response?.data?.message || "An error occurred while adding the student.";
+
+    setError(errorMessage);
+
     console.error("Error adding student:", error);
+    
+    toast.error("Failed to add student. Please try again.");
   }
   finally{
     setLoading(false);

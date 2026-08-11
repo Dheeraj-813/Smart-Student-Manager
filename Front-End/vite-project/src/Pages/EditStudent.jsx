@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
 import { updateStudent, getStudentById} from "../Services/StudentService"
+import { toast } from "react-toastify";
 
 const EditStudent = () => {
 
@@ -70,14 +71,19 @@ const EditStudent = () => {
             // Assuming you have the student ID available, replace 'studentId' with the actual ID
             await updateStudent(studentId, updatedStudent);
             
-            alert(`Student updated successfully!`);
+            toast.success(`Student updated successfully!`);
 
             navigate("/dashboard/student");
 
 
         } catch(error){
-            setError(error.response?.data?.message || "An error occurred while updating the student.");
-            console.error("Error updating student:", error);
+            const errorMessage = error.response?.data?.message || "An error occurred while editing the student.";
+
+            setError(errorMessage);
+
+            console.error("Error editing student:", error);
+            
+            toast.error("Failed to update student. Please try again.");
         }
         finally{
             setLoading(false);

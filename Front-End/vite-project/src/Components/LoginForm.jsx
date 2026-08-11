@@ -7,6 +7,7 @@ import { validateLogin } from '../Utils/Validation';
 import { login } from '../Services/authServices';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { toast } from 'react-toastify';
 
 
 function LoginForm() {
@@ -62,12 +63,18 @@ function LoginForm() {
 
         // Navigate to the dashboard or home page after successful login
         navigate('/dashboard');
+
+        toast.success(`Welcome, ${response.user.name}!`);
+
         }
     }
     catch(error){
-        console.error("Login failed:", error);
-        // Handle login error (e.g., show error message to user)
-        alert("Login failed. Please check your credentials and try again.");
+    console.error("Login failed:", error);
+
+    const errorMessage =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials and try again.";
+        toast.error(errorMessage);
     }
   }
 
