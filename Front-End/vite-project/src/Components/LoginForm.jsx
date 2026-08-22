@@ -4,6 +4,8 @@ import studManage from '../assets/StudentManage.jpg'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { validateLogin } from '../Utils/Validation';
+import { login } from '../Services/authServices';
+import { useNavigate } from 'react-router-dom';
 
 
 function LoginForm() {
@@ -27,13 +29,15 @@ function LoginForm() {
         }));
     };
 
+// Use navigate hook from react-router-dom to programmatically navigate after successful login
+  const navigate = useNavigate();
+
+
+
 // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Email:', formData.email);
-    console.log('Password:', formData.password);
-    console.log('Remember Me:', formData.rememberMe);
 
     const validationErrors = validateLogin(formData);
 
@@ -43,6 +47,25 @@ function LoginForm() {
     }
 
     setErrors({}); // Clear errors if validation passes
+
+    // Call the login service
+    try{
+        const response = await login(formData.email, formData.password);
+
+        // Save token to localStorage or sessionStorage based on rememberMe
+        if(response.success){
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
+
+        // Navigate to the dashboard or home page after successful login
+        navigate('/dashboard');
+        }
+    }
+    catch(error){
+        console.error("Login failed:", error);
+        // Handle login error (e.g., show error message to user)
+        alert("Login failed. Please check your credentials and try again.");
+    }
   }
 
   return (
