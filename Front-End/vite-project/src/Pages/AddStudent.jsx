@@ -1,10 +1,20 @@
 // import React from 'react'
 import {useState} from 'react';
+import { addStudent } from '../Services/StudentService';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AddStudent = () => {
 
+const navigate = useNavigate();
+
+const [loading, setLoading] = useState(false);
+
+const [error, setError] = useState('');
+
 const [student, setStudent] = useState({
   name: "",
+  age: "",
   course: "",
   marks: "",
 });
@@ -13,7 +23,7 @@ const handleChange = (e) => {
     setStudent({
       ...student,
       [e.target.name]:
-        e.target.name === "marks"
+        e.target.name === "age" || e.target.name === "marks" 
           ? e.target.value === "" 
             ? "" 
             : Number(e.target.value)
@@ -21,16 +31,49 @@ const handleChange = (e) => {
     });
 };
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log(student); // for now
+  setError(''); // Clear previous error messages
 
-    // Reset form after submit
+    if(student.age < 18 || student.age > 35) {
+      toast.error("Age must be between 18 and 35.");
+      return
+    }
+
+    if(student.marks < 0 || student.marks > 100) {
+      toast.error("Marks must be between 0 and 100.");
+      return
+    }
+
+    setLoading(true);
+
+  try{
+    const response = await addStudent(student);
+
     setStudent({
       name: "",
+      age: "",
       course: "",
-      marks: ""
+      marks: "",
     });
+
+    toast.success(`Student ${response.data.name} added successfully!`);
+
+    navigate("/dashboard/student");
+
+  } catch(error){
+    const errorMessage = error.response?.data?.message || "An error occurred while adding the student.";
+
+    setError(errorMessage);
+
+    console.error("Error adding student:", error);
+    
+    toast.error("Failed to add student. Please try again.");
+  }
+  finally{
+    setLoading(false);
+  }
+  
 };
 
   return (
@@ -51,6 +94,15 @@ const handleSubmit = (e) => {
         />
 
         <input
+          type="number"
+          placeholder="Age"
+          name="age"
+          className="w-full mb-4 p-2 border rounded"
+          onChange={handleChange}
+          value={student.age}
+        />
+
+        <input
           type="text"
           placeholder="Course"
           name='course'
@@ -68,8 +120,22 @@ const handleSubmit = (e) => {
           value={student.marks}
         />
 
-        <button type="submit" className="bg-blue-500 text-white px-6 py-2 rounded">
-          Add Student
+          {/* Error Message */}
+          {error && (
+            <p className="text-red-600 mb-4">
+              {error}
+            </p>
+          )}
+
+        <button type="submit" className={`px-6 py-2 rounded text-white ${
+                        loading
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-500 hover:bg-blue-600"
+                        }`} 
+        disabled={loading}>
+
+          {loading ? "Adding..." : "Add Student"}
+          
         </button>
 
         </form>

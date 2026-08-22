@@ -21,9 +21,15 @@ const getAllStudents = async () => {
   return await Student.find();
 };
 
+// Get student with id
+const getStudentById = async (id) => {
+  return await Student.findById(id);
+}
+
 module.exports = {
   addStudent,
   updateStudent,
   deleteStudent,
   getAllStudents,
+  getStudentById,
 };

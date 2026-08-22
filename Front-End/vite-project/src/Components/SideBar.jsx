@@ -1,7 +1,26 @@
 import {Link} from 'react-router-dom';
 import studentsCap from '../assets/students-cap.png'
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 const SideBar = () => {
+  const navigate = useNavigate();
+  
+  // Use the useAuth hook to access the logout function from AuthContext
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    // Clear any authentication tokens or user data here if needed
+    // For example: localStorage.removeItem('authToken');
+    // localStorage.removeItem('token'); // Example of clearing a token
+    
+     // Use the useAuth hook to access the logout function from AuthContext
+    logout(); // Call the logout function from AuthContext
+
+    // Navigate to the login page
+    navigate('/LoginForm', { replace: true });
+  }
+
   return (
         <div className="h-screen w-64 bg-blue-900 text-white flex flex-col p-5">
       
@@ -34,7 +53,7 @@ const SideBar = () => {
 
       {/* Bottom Section (Optional) */}
       <div className="mt-auto">
-        <button className="w-full bg-red-500 p-2 rounded hover:bg-red-600">
+        <button className="w-full bg-red-500 p-2 rounded hover:bg-red-600" onClick={handleLogout}>
           Logout
         </button>
       </div>

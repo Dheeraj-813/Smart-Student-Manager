@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { validateLogin } from '../Utils/Validation';
 import { login } from '../Services/authServices';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
+import { toast } from 'react-toastify';
 
 
 function LoginForm() {
@@ -32,7 +34,8 @@ function LoginForm() {
 // Use navigate hook from react-router-dom to programmatically navigate after successful login
   const navigate = useNavigate();
 
-
+// Use the useAuth hook to access the login function from AuthContext
+  const { login: authLogin } = useAuth();
 
 // Handle form submission
   const handleSubmit = async (e) => {
@@ -54,17 +57,24 @@ function LoginForm() {
 
         // Save token to localStorage or sessionStorage based on rememberMe
         if(response.success){
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        // localStorage.setItem('token', response.token);
+        // localStorage.setItem('user', JSON.stringify(response.user));
+        authLogin(response.token, response.user); // Use the login function from AuthContext to update the context state
 
         // Navigate to the dashboard or home page after successful login
         navigate('/dashboard');
+
+        toast.success(`Welcome, ${response.user.name}!`);
+
         }
     }
     catch(error){
-        console.error("Login failed:", error);
-        // Handle login error (e.g., show error message to user)
-        alert("Login failed. Please check your credentials and try again.");
+    console.error("Login failed:", error);
+
+    const errorMessage =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials and try again.";
+        toast.error(errorMessage);
     }
   }
 
@@ -76,7 +86,11 @@ function LoginForm() {
                     {/* Logo */}
             <div className="flex items-center space-x-3 mt-8 mb-6">
                 <img className="w-[45px] h-[45px]" src={studentsCap} alt="logo" />
-                <span className="text-xl font-bold text-gray-800">Smart Student Manager</span>
+                <span className="text-xl font-bold text-gray-800">
+                    <Link to="/" className="text-xl font-bold text-gray-800">
+                        Smart Student Manager
+                    </Link>
+                </span>
             </div>
 
                 <img
