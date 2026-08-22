@@ -86,7 +86,11 @@ function LoginForm() {
                     {/* Logo */}
             <div className="flex items-center space-x-3 mt-8 mb-6">
                 <img className="w-[45px] h-[45px]" src={studentsCap} alt="logo" />
-                <span className="text-xl font-bold text-gray-800">Smart Student Manager</span>
+                <span className="text-xl font-bold text-gray-800">
+                    <Link to="/" className="text-xl font-bold text-gray-800">
+                        Smart Student Manager
+                    </Link>
+                </span>
             </div>
 
                 <img

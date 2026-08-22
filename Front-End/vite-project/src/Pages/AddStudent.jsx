@@ -33,8 +33,19 @@ const handleChange = (e) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setLoading(true);
   setError(''); // Clear previous error messages
+
+    if(student.age < 18 || student.age > 35) {
+      toast.error("Age must be between 18 and 35.");
+      return
+    }
+
+    if(student.marks < 0 || student.marks > 100) {
+      toast.error("Marks must be between 0 and 100.");
+      return
+    }
+
+    setLoading(true);
 
   try{
     const response = await addStudent(student);
