@@ -114,8 +114,8 @@ const Student = () => {
 
       {/* Table */}
 
-      <div className="overflow-hidden rounded-lg border border-gray-200">
-        <table className="w-full text-gray-700 text-center">
+      <div className="overflow-x-auto rounded-lg border border-gray-200">
+        <table className="min-w-[650px] w-full text-gray-700 text-center">
 
           <thead className="bg-gray-100">
             <tr>
@@ -143,7 +143,7 @@ const Student = () => {
 
                   {/* Edit button */}
                   <Link to={`/dashboard/EditStudent/${student._id}`} 
-                  className="inline-block px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition mr-2">
+                  className="inline-block whitespace-nowrap px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition mr-2">
                   
                     <i className="fa-solid fa-pen-to-square mr-2"></i>
                     Edit
@@ -151,7 +151,7 @@ const Student = () => {
                   </Link>
 
                   {/* Delete button */}
-                  <button className="px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition" 
+                  <button className="inline-block whitespace-nowrap px-4 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition" 
                   onClick={() => handleDelete(student._id)}>
                     <i className="fa-solid fa-trash-can mr-2"></i>
                     Delete
