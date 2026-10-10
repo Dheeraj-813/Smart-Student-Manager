@@ -4,14 +4,19 @@ import NotFound from './Pages/NotFound';
 import PublicLayout from './Layouts/PublicLayout';
 import Student from './Pages/Student';
 import DashBoardLayout from './Layouts/DashBoardLayout';
+import StudentReportLayout from './Layouts/StudentReportLayout';
 import AddStudent from './Pages/AddStudent';
 import DashBoard from './Pages/DashBoard';
 import AdminLoginPage from './Pages/AdminLoginPage';
 import ProtectedRoute from './Components/ProtectedRoute';
 import EditStudent from './Pages/EditStudent';
+import StudentReport from './Components/StudentReport';
 import { AuthProvider } from './Context/AuthContext';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Report from './Pages/Report';
+import RoleBasedRoute from './Routes/RoleBasedRoute';
+import AccessDenied from './Pages/AccessDenied';
 
 function App() {
   
@@ -35,8 +40,23 @@ function App() {
             <Route path='AddStudent' element={<AddStudent/>}/>
             <Route path='DashBoard' element={<DashBoard/>}/>
             <Route path='EditStudent/:id' element={<EditStudent/>}/>
+
+            {/* Role-Based Access */}
+             <Route element={<RoleBasedRoute allowedRoles={["admin", "teacher"]} />}>
+            <Route path="reports" element={<Report />} />
+            </Route>
+
             </Route>
             </Route>
+
+            {/* Student Report Pages */}
+            <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard/StudentReport" element={<StudentReportLayout />}>
+            <Route path=":id" element={<StudentReport />} />
+            </Route>
+            </Route>
+
+            <Route path="/access-denied" element={<AccessDenied />} />
 
             {/* Not Found */}
             <Route path="*" element={<NotFound />} />

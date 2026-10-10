@@ -101,7 +101,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
           )}
         </Link>
 
-        <Link to="/reports" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
+        <Link to="/dashboard/reports" className="hover:bg-blue-700 p-2 rounded flex items-center gap-2">
           <span>📊</span>
           {sidebarOpen && (
             <span className="ml-3">

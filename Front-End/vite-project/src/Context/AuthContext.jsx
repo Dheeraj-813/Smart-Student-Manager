@@ -11,6 +11,8 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem('token') || null);
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
 
+    console.log("Logged-in user:", user);
+
     const login = (newToken, newUser) => {
         localStorage.setItem('token', newToken);
         localStorage.setItem('user', JSON.stringify(newUser));

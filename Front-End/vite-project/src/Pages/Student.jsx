@@ -154,6 +154,7 @@ const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
             <thead className="bg-gray-100">
               <tr>
                 <th className="py-3 px-4 border-b font-semibold">Name</th>
+                <th className="py-3 px-4 border-b font-semibold">Age</th>
                 <th className="py-3 px-4 border-b font-semibold">Course</th>
                 <th className="py-3 px-4 border-b font-semibold">Marks</th>
                 <th className="py-3 px-4 border-b font-semibold">Actions</th>
@@ -174,6 +175,7 @@ const totalPages = Math.ceil(filteredStudents.length / studentsPerPage);
                     className="hover:bg-gray-100 transition"
                   >
                     <td className="py-3 px-4 border-b">{student.name}</td>
+                    <td className="py-3 px-4 border-b">{student.age}</td>
                     <td className="py-3 px-4 border-b">{student.course}</td>
                     <td className="py-3 px-4 border-b">{student.marks}</td>
                     <td className="py-3 px-4 border-b">
