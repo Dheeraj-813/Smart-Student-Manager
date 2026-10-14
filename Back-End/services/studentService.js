@@ -26,10 +26,16 @@ const getStudentById = async (id) => {
   return await Student.findById(id);
 }
 
+// Get student report for a specific student
+const getMyStudentReport = async (studentId) => {
+  return await Student.findById(studentId);
+};
+
 module.exports = {
   addStudent,
   updateStudent,
   deleteStudent,
   getAllStudents,
   getStudentById,
+  getMyStudentReport,
 };
