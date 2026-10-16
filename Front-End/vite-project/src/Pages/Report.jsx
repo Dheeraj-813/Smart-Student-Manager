@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { getAllStudents } from "../Services/StudentService";
+import { getAllStudents, getMyReport } from "../Services/StudentService";
 import studentLogo from "../Assets/studentLogo.png";
 import GLogo from "../Assets/GraphLogo.jpg";
 import GreenCheck from "../Assets/GreenCheck.png";
 import TopPerformerImg from "../Assets/TopPerformer.jpg";
 import { Link } from "react-router-dom";
+import { useAuth } from "../Context/AuthContext";
 
 const Report = () => {
+  const { user } = useAuth();
+
   const [search, setSearch] = useState("");
 
   const [students, setStudents] = useState([]);
@@ -26,27 +29,47 @@ const Report = () => {
   };
 
   const getGrade = (marks) => {
-    if (marks >= 90) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
-  A+
-</span>;
-    if (marks >= 80) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-700">
-  A
-</span>;
-    if (marks >= 70) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
-  B+
-</span>;
-    if (marks >= 60) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-orange-100 text-orange-700">
-  B
-</span>;
-    if (marks >= 50) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-purple-100 text-purple-700">
-  C
-</span>;
-    if (marks >= 35) return <span className="px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-gray-700">
-  D
-</span>;
-    return <span className="px-3 py-1 rounded-full text-sm font-bold bg-gray-100 text-red-700">
-  F
-</span>;
+    if (marks >= 90)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-green-100 text-green-700">
+          A+
+        </span>
+      );
+    if (marks >= 80)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-700">
+          A
+        </span>
+      );
+    if (marks >= 70)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-yellow-100 text-yellow-700">
+          B+
+        </span>
+      );
+    if (marks >= 60)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-orange-100 text-orange-700">
+          B
+        </span>
+      );
+    if (marks >= 50)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-purple-100 text-purple-700">
+          C
+        </span>
+      );
+    if (marks >= 35)
+      return (
+        <span className="px-3 py-1 rounded-full text-sm font-bold bg-red-100 text-gray-700">
+          D
+        </span>
+      );
+    return (
+      <span className="px-3 py-1 rounded-full text-sm font-bold bg-gray-100 text-red-700">
+        F
+      </span>
+    );
   };
 
   const getResult = (marks) => {
@@ -100,23 +123,48 @@ const Report = () => {
     const fetchStudents = async () => {
       try {
         setLoading(true);
-        const response = await getAllStudents();
+        setError("");
 
-        if (response.success) {
-          setStudents(response.data);
+        let response;
+
+        if (user?.role === "student") {
+          response = await getMyReport();
+
+          if (response.success && response.data) {
+            // The API returns one student's record.
+            setStudents([response.data]);
+          } else {
+            setStudents([]);
+            setError("Unable to load your report.");
+          }
+        } else if (user?.role === "admin" || user?.role === "teacher") {
+          response = await getAllStudents();
+
+          if (response.success) {
+            setStudents(response.data);
+          } else {
+            setStudents([]);
+            setError("Unable to load student reports.");
+          }
         } else {
-          setError("Unable to load Students...!");
+          setStudents([]);
+          setError("You are not authorized to view these reports.");
         }
       } catch (error) {
         console.error(error);
-        setError(error.userMessage || "Something went wrong.");
+        setStudents([]);
+        setError(
+          error.userMessage || "Something went wrong while loading reports.",
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStudents();
-  }, []);
+    if (user) {
+      fetchStudents();
+    }
+  }, [user]);
 
   if (loading) {
     return <h2 className="text-center mt-10">Loading students...</h2>;
@@ -163,7 +211,7 @@ const Report = () => {
       </div>
 
       {/* Cards Container */}
-      
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         {/* Card 1 */}
         <div className="bg-white shadow rounded-xl p-6 transition duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -245,41 +293,43 @@ const Report = () => {
           </thead>
           <tbody>
             {filteredStudents.length === 0 ? (
-                <tr>
-                  <td colSpan="7" className="py-4 text-gray-500 text-center">
-                    No students found.
-                  </td>
-                </tr>
-              ) : (
+              <tr>
+                <td colSpan="7" className="py-4 text-gray-500 text-center">
+                  No students found.
+                </td>
+              </tr>
+            ) : (
               filteredStudents.map((student) => (
-              <tr key={student._id}>
-                <td className="py-3 px-4 border-b">{student.name}</td>
-                <td className="py-3 px-4 border-b">{student.age}</td>
-                <td className="py-3 px-4 border-b">{student.course}</td>
-                <td className="py-3 px-4 border-b">{student.marks}</td>
-                <td className="py-3 px-4 border-b">
-                  {getGrade(student.marks)}
-                </td>
-                <td className="py-3 px-4 border-b">
-                  {getResult(student.marks)}
-                </td>
-                <td className="py-3 px-4 border-b">
-                      {/* Edit button */}
+                <tr key={student._id}>
+                  <td className="py-3 px-4 border-b">{student.name}</td>
+                  <td className="py-3 px-4 border-b">{student.age}</td>
+                  <td className="py-3 px-4 border-b">{student.course}</td>
+                  <td className="py-3 px-4 border-b">{student.marks}</td>
+                  <td className="py-3 px-4 border-b">
+                    {getGrade(student.marks)}
+                  </td>
+                  <td className="py-3 px-4 border-b">
+                    {getResult(student.marks)}
+                  </td>
+                  <td className="py-3 px-4 border-b">
+                    {/* Edit button */}
+                    {(user?.role === "admin" || user?.role === "teacher") && (
                       <Link
                         to={`/dashboard/StudentReport/${student._id}`}
                         className="inline-flex h-[45px] px-6 bg-blue-500 text-white text-center items-center justify-center rounded hover:bg-blue-600 transition"
                       >
                         Get Report
                       </Link>
-                </td>
-              </tr>
-            ))
-          )}
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
     </div>
-  )
+  );
 };
 
 export default Report;

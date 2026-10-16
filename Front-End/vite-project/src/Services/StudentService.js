@@ -54,3 +54,13 @@ export const deleteStudent = async (id) => {
     throw error;
   }
 }
+
+export const getMyReport = async () => {
+  try {
+    const response = await api.get("/students/my-report");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch my report:", error);
+    throw error;
+  }
+};
