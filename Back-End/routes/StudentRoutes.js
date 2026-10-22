@@ -8,7 +8,7 @@ router.use(authMiddleware); // Apply authentication middleware to all routes
 router.get('/my-report', studentController.getMyStudentReport);
 
 // Routes
-router.post('/', studentController.addStudent);
+router.post('/add', studentController.addStudent);
 router.get('/', studentController.getStudents);
 router.get("/:id", studentController.getStudentById);
 router.put('/:id', studentController.updateStudent);
