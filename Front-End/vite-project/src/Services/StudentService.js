@@ -24,7 +24,7 @@ export const getStudentById = async (id) => {
 
 export const addStudent = async (studentData) => {
   try{
-    const response = await api.post("/students", studentData);
+    const response = await api.post("/students/add", studentData);
     return response.data;
   }
   catch(error){
